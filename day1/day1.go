@@ -5,13 +5,9 @@ import (
 	"os"
 	"strconv"
 	"strings"
-)
 
-func checkErr(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
+	"github.com/camiloaromero23/aoc2021/utils"
+)
 
 func isLarger(a, b [3]int) bool {
 	var accA, accB int
@@ -24,7 +20,7 @@ func isLarger(a, b [3]int) bool {
 
 func main() {
 	in, err := os.ReadFile("day1.input")
-	checkErr(err)
+	utils.CheckErr(err)
 	input := strings.TrimSpace(string(in))
 
 	aux := strings.Split(input, "\n")
@@ -32,7 +28,7 @@ func main() {
 
 	for i, v := range aux {
 		val, err := strconv.Atoi(v)
-		checkErr(err)
+		utils.CheckErr(err)
 		depths[i] = val
 	}
 
@@ -57,5 +53,5 @@ func main() {
 		count++
 	}
 
-	fmt.Printf("Measurement increases = %d", count)
+	fmt.Printf("Measurement increases = %d\n", count)
 }
