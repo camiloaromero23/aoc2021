@@ -42,16 +42,17 @@ func getRating(arr *[]string, bitIndex int, bitVal int) (rating []string) {
 }
 
 func updateRating(rating *[]string, ratingType string, index int) {
-	if len(*rating) > 1 {
-		zeros, ones := countBits(rating, index)
-		most, least := mostCommon(zeros, ones)
-		if ratingType == "oxygen" {
-			*rating = getRating(rating, index, most)
-		} else {
-			*rating = getRating(rating, index, least)
-		}
+	if len(*rating) == 1 {
+		return
 	}
 
+	zeros, ones := countBits(rating, index)
+	most, least := mostCommon(zeros, ones)
+	if ratingType == "oxygen" {
+		*rating = getRating(rating, index, most)
+	} else {
+		*rating = getRating(rating, index, least)
+	}
 }
 
 func main() {
@@ -60,22 +61,17 @@ func main() {
 	input := strings.TrimSpace(string(in))
 	aux := strings.Split(input, "\n")
 
-	bitSize := len(aux[0])
 	var oxygen, co2 []string
 
-	for i := 0; i < bitSize; i++ {
-		var zeros, ones int
-		var most, least int
+	zeros, ones := countBits(&aux, 0)
+	most, least := mostCommon(zeros, ones)
+	oxygen = getRating(&aux, 0, most)
+	co2 = getRating(&aux, 0, least)
 
-		if i == 0 {
-			zeros, ones = countBits(&aux, i)
-			most, least = mostCommon(zeros, ones)
-			oxygen = getRating(&aux, i, most)
-			co2 = getRating(&aux, i, least)
-		} else {
-			updateRating(&oxygen, "oxygen", i)
-			updateRating(&co2, "co2", i)
-		}
+	bitSize := len(aux[0])
+	for i := 1; i < bitSize; i++ {
+		updateRating(&oxygen, "oxygen", i)
+		updateRating(&co2, "co2", i)
 	}
 
 	oxygenRating, err := strconv.ParseInt(oxygen[0], 2, 64)
